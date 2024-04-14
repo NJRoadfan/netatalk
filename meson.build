@@ -480,6 +480,7 @@ message('BDB version: ', bdb_version)
 
 with_ssl_dir = get_option('with-ssl-dir')
 
+wolfssl = dependency('wolfssl', required: false)
 crypt = cc.find_library('crypt', has_headers: 'crypt.h', required: false)
 des = cc.find_library('des', required: false)
 
@@ -527,7 +528,12 @@ crypto = declare_dependency(
     include_directories: ssl_includes,
 )
 
-if ssl_link_args != [] and ssl_includes != []
+if wolfssl.found()
+    have_ssl = true
+    cdata.set('HAVE_LIBCRYPTO', 1)
+    cdata.set('WOLFSSL_DHX', 1)
+    cdata.set('UAM_DHX', 1)
+elif ssl_link_args != [] and ssl_includes != []
     have_ssl = true
     cdata.set('HAVE_LIBCRYPTO', 1)
     cdata.set('OPENSSL_DHX', 1)
@@ -535,7 +541,7 @@ if ssl_link_args != [] and ssl_includes != []
 else
     have_ssl = false
     warning(
-        'OpenSSL version 1.1 or libressl are required for RANDNUM and DHX UAM support',
+        'WolfSSL, OpenSSL version 1.1 or libressl are required for RANDNUM and DHX UAM support',
     )
 endif
 
