@@ -1,8 +1,32 @@
 Changes in 3.2.0
 ================
-* UPD: Remove quota support from Netatalk 3, GitHub #493
-* UPD: Regenerate sparql_parser code with GNU Bison, GitHub #337
-* UPD: Code cleanup, GitHub #490, #494
+* NEW: Introduce the Meson build system, GitHub #707
+       GNU Autotools is still supported, but will be removed
+       in a future release. See the newly added INSTALL file.
+* NEW: Introduce an official Dockerfile and entry script, GitHub #713
+* NEW: LDAP API has been updated to use ldap_initialize, GitHub #762
+       OpenLDAP v2.3 or later is now a requirement for LDAP support.
+       afp.conf option "ldap server" has been replaced with "ldap uri"
+       and has a new syntax. See the manual for details.
+* NEW: Option to log to file with second (not ms) accuracy, GitHub #580
+       Enable with afp.conf option: "log seconds"
+* NEW: Option to add delay to FCE event emission, GitHub #849
+       Enable with afp.conf option: "fce sendwait"
+* UPD: Remove legacy cdb and tdb CNID backends, GitHub #508
+* UPD: Remove quota functionality, GitHub #493
+* UPD: Remove Andrew File System (AFS) support, GitHub #554
+* UPD: Remove bundled talloc, GitHub #479
+* UPD: Remove generated SPARQL code from revision control, GitHub #337
+       This introduces a build system dependency on
+       a yacc parser and a lexer to build with Spotlight support.
+* UPD: Rename macOS launchd plist to io.netatalk.daemon.plist, GitHub #778
+       This is a breaking change that requires cleanup of the old one.
+* NEW: docs: Distribute a manual appendix with the GNU GPL v2, GitHub #745
+* NEW: docs: Distribute the Japanese localization of the manual, GitHub #806
+* NEW: docs: Generate a manual appendix with build instructions, GitHub #791
+* FIX: afpd: Prevent theoretical crash in FPSetACL, GitHub #364
+* FIX: Build with PAM support on FreeBSD 14, GitHub #560
+* FIX: The ability to disable Spotlight at compile time, GitHub #571
 
 Changes in 3.1.18
 =================
