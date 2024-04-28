@@ -33,17 +33,17 @@ function helper::configure() {
 	fi
 	if [ ! -z "${AFP_GID}" ]; then
 		cmd="$cmd --gid ${AFP_GID}"
-		groupadd --gid ${AFP_GID} ${AFP_USER} || true 2> /dev/null
+		addgroup -g ${AFP_GID} ${AFP_USER} || true 2> /dev/null
 	fi
-	adduser $cmd --no-create-home --disabled-password --gecos '' "${AFP_USER}" || true 2> /dev/null
+	adduser $cmd --no-create-home --disabled-password "${AFP_USER}" || true 2> /dev/null
 	if [ ! -z "${AFP_GROUP}" ]; then
-		groupadd ${AFP_GROUP} || true 2> /dev/null
+		addgroup ${AFP_GROUP} || true 2> /dev/null
 		usermod -aG "${AFP_GROUP}" "${AFP_USER}" || true 2> /dev/null
 	fi
 	echo "${AFP_USER}:${AFP_PASS}" | chpasswd
 
-	if [ -f "/usr/etc/netatalk/afppasswd" ]; then
-		rm -f /usr/etc/netatalk/afppasswd
+	if [ -f "/usr/local/etc/afppasswd" ]; then
+		rm -f /usr/local/etc/afppasswd
 	fi
 
 	if [ -z "${INSECURE_AUTH}" ]; then
@@ -78,14 +78,14 @@ EOD
 	echo "*** Configuring AppleVolumes.default"
 
 	# Clean up residual configurations
-	sed -i '/^~/d' /usr/etc/netatalk/AppleVolumes.default
-	sed -i '/^\//d' /usr/etc/netatalk/AppleVolumes.default
+	sed -i '/^~/d' /usr/local/etc/AppleVolumes.default
+	sed -i '/^\//d' /usr/local/etc/AppleVolumes.default
 
 	# Modify netatalk configuration files
 	if [ -z "${SHARE_NAME}" ]; then
-	    echo "/mnt/afpshare ${AVOLUMES_OPTIONS}" | tee -a /usr/etc/netatalk/AppleVolumes.default
+	    echo "/mnt/afpshare ${AVOLUMES_OPTIONS}" | tee -a /usr/local/etc/AppleVolumes.default
 	else
-	    echo "/mnt/afpshare \"${SHARE_NAME}\" ${AVOLUMES_OPTIONS}" | tee -a /usr/etc/netatalk/AppleVolumes.default
+	    echo "/mnt/afpshare \"${SHARE_NAME}\" ${AVOLUMES_OPTIONS}" | tee -a /usr/local/etc/AppleVolumes.default
 	fi
 
 	echo "*** Configuring afpd.conf"
@@ -99,18 +99,18 @@ EOD
 		AFPD_UAMS+=",uams_clrtxt.so"
 	fi
 	if [ -z "${SERVER_NAME}" ]; then
-		echo "- ${AFPD_DEFAULT_OPTIONS} ${AFPD_UAMS} ${AFPD_OPTIONS}" | tee /usr/etc/netatalk/afpd.conf
+		echo "- ${AFPD_DEFAULT_OPTIONS} ${AFPD_UAMS} ${AFPD_OPTIONS}" | tee /usr/local/etc/afpd.conf
 	else
-		echo "\"${SERVER_NAME}\" ${AFPD_DEFAULT_OPTIONS} ${AFPD_UAMS} ${AFPD_OPTIONS}" | tee /usr/etc/netatalk/afpd.conf
+		echo "\"${SERVER_NAME}\" ${AFPD_DEFAULT_OPTIONS} ${AFPD_UAMS} ${AFPD_OPTIONS}" | tee /usr/local/etc/afpd.conf
 	fi
 
 	echo "*** Configuring atalkd.conf"
 
-	echo "${ATALKD_INTERFACE} ${ATALKD_OPTIONS}" | tee /usr/etc/netatalk/atalkd.conf
+	echo "${ATALKD_INTERFACE} ${ATALKD_OPTIONS}" | tee /usr/local/etc/atalkd.conf
 
 	echo "*** Configuring papd.conf"
 
-	echo "cupsautoadd:op=root:" | tee /usr/etc/netatalk/papd.conf
+	echo "cupsautoadd:op=root:" | tee /usr/local/etc/papd.conf
 }
 
 
@@ -118,16 +118,16 @@ EOD
 
 # Release locks incase they're left behind from a previous execution
 echo "*** Removing old locks"
-rm -f /var/lock/afpd /var/lock/atalkd /var/lock/cnid_metad || true
+rm -f /var/spool/locks/afpd /var/spool/locks/atalkd /var/spool/locks/cnid_metad || true
 
 # Ready to start things below here
 
 # All daemons fork when ready, so we can launch them in order
 if [ -z "${ATALKD_INTERFACE}" ]; then
 	echo "WARNING The AppleTalk services will NOT be started. The requirements are:"
-	echo "- The host OS must have an AppleTalk networking stack, e.g. Debian, Ubuntu, or NetBSD."
-	echo "- The Docker container must be use the \`host\` network driver with the \`NET_ADMIN\` capability."
-	echo "- You must set the \`ATALKD_INTERFACE\` environment variable."
+	echo "- The host OS has an AppleTalk networking stack, e.g. Linux or NetBSD."
+	echo "- The Docker container uses the \`host' network driver with the \`NET_ADMIN' capability."
+	echo "- The \`ATALKD_INTERFACE' environment variable is set to a valid host network interface."
 else
 	echo "*** Starting AppleTalk services (this will take a minute)"
 	atalkd
