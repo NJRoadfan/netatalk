@@ -503,7 +503,7 @@ ssl_dirs = [
     '/usr' / atalk_libname / 'ssl',
     '/usr',
 ]
-
+if not wolfssl.found()
 foreach dir : ssl_dirs
     if fs.exists(dir / 'include/openssl/cast.h')
         ssl_link_args += ['-L' + dir / atalk_libname, '-L' + dir, '-lcrypto']
@@ -527,6 +527,7 @@ crypto = declare_dependency(
     link_args: ssl_link_args,
     include_directories: ssl_includes,
 )
+endif
 
 if wolfssl.found()
     have_ssl = true
