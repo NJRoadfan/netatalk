@@ -528,13 +528,17 @@ crypto = declare_dependency(
     include_directories: ssl_includes,
 )
 
+ssl_deps = []
+
 if wolfssl.found()
     have_ssl = true
+    ssl_deps += wolfssl
     cdata.set('HAVE_LIBCRYPTO', 1)
     cdata.set('WOLFSSL_DHX', 1)
     cdata.set('UAM_DHX', 1)
 elif ssl_link_args != [] and ssl_includes != []
     have_ssl = true
+    ssl_deps += crypto
     cdata.set('HAVE_LIBCRYPTO', 1)
     cdata.set('OPENSSL_DHX', 1)
     cdata.set('UAM_DHX', 1)
