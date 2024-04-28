@@ -549,6 +549,8 @@ else
     )
 endif
 
+message(ssl_deps)
+
 #
 # Check for GSSAPI
 #
