@@ -31,13 +31,6 @@
 #include <openssl/bn.h>
 #include <openssl/dh.h>
 #include <openssl/cast.h>
-#elif defined(WOLFSSL_DHX)
-#include <wolfssl/options.h>
-#include <wolfssl/openssl/bn.h>
-#include <wolfssl/openssl/dh.h>
-#include <wolfssl/openssl/err.h>
-#include <wolfssl/openssl/ssl.h>
-#include <atalk/cast.h>
 #else /* OPENSSL_DHX */
 #include <bn.h>
 #include <dh.h>
