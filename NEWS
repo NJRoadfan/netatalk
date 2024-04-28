@@ -33,6 +33,10 @@ Changes in 3.2.0
 * UPD: docs: Document libraries, init scripts in manual, GitHub #808
 * FIX: afpd: Prevent theoretical crash in FPSetACL, GitHub #364
 * FIX: libatalk: Restore invalid EA metadata cleanup, GitHub #400
+* UPD: Rewrite the afpstats script in Perl, GitHub #893
+       This removes the effective dependency on a Python runtime.
+* UPD: Make Perl and grep optional requirements, GitHub #886
+       When either is missing, do not build the Perl scripts.
 * NEW: Build system option "disable-init-hooks", GitHub #796
        Will skip init script enablement commands that require
        elevated privileges on the system.
