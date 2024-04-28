@@ -219,7 +219,7 @@ if have_ssl
         'uams_randnum',
         uams_randnum_sources,
         include_directories: root_includes,
-        dependencies: [pam, ssl-deps],
+        dependencies: [pam, ssl_deps],
         name_prefix: '',
         install: true,
         install_dir: libdir / 'netatalk',
