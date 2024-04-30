@@ -250,7 +250,7 @@ jobs:
         run: |
           pacman -Sy --noconfirm \
             cracklib \
-            dbus-glib
+            dbus-glib \
             meson \
             ninja \
             pkgconfig \
