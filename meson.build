@@ -57,14 +57,9 @@ netatalk_common_flags = [
     '-Wno-all',
     '-Wno-deprecated-declarations',
 ]
-
-if host_os == 'linux'
-    netatalk_common_flags += '-D_GNU_SOURCE'
-endif
+netatalk_common_link_args = []
 
 add_global_arguments(netatalk_common_flags, language: 'c')
-
-netatalk_common_link_args = []
 
 # Per target
 
