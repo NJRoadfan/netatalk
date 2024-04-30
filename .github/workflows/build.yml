@@ -249,8 +249,11 @@ jobs:
       - name: Install dependencies
         run: |
           pacman -Sy --noconfirm \
+            autoconf \
+            automake \
             cracklib \
             dbus-glib \
+            libtool \
             meson \
             ninja \
             pkgconfig \
