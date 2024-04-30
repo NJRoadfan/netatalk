@@ -251,13 +251,17 @@ jobs:
           pacman -Sy --noconfirm \
             autoconf \
             automake \
+            bison \
             cracklib \
             dbus-glib \
+            flex \
             gcc \
             libtool \
+            make \
             meson \
             ninja \
             pkgconfig \
+            talloc \
             tracker3
       - name: Autotools - Bootstrap
         run: ./bootstrap
