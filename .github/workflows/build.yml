@@ -253,6 +253,7 @@ jobs:
             automake \
             cracklib \
             dbus-glib \
+            gcc \
             libtool \
             meson \
             ninja \
