@@ -254,7 +254,7 @@ jobs:
             meson \
             ninja \
             pkgconfig \
-            tracker
+            tracker3
       - name: Autotools - Bootstrap
         run: ./bootstrap
       - name: Autotools - Configure
