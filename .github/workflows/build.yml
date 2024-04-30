@@ -248,7 +248,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
-          pacman -Sy \
+          pacman -Sy --noconfirm \
             cracklib \
             dbus-glib
             meson \
