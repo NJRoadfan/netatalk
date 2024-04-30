@@ -248,10 +248,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
-          pacman -S \
-            autoconf \
-            automake \
-            libtool \
+          pacman -Sy \
             cracklib \
             dbus-glib
             meson \
@@ -263,7 +260,8 @@ jobs:
       - name: Autotools - Configure
         run: |
           ./configure \
-            --with-init-style=systemd
+            --with-cracklib \
+            --with-init-style=systemd \
             --with-tracker-pkgconfig-version=3.0
       - name: Autotools - Build
         run: make -j $(nproc)
