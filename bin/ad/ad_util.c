@@ -95,7 +95,6 @@ void _log(enum logtype lt, char *fmt, ...)
 /*!
  * Load volinfo and initialize struct vol
  *
- * Only opens "dbd" volumes !
  *
  * @param path   (r)  path to evaluate
  * @param vol    (rw) structure to initialize
@@ -111,8 +110,8 @@ int openvol(AFPObj *obj, const char *path, afpvol_t *vol)
     if ((vol->vol = getvolbypath(obj, path)) == NULL)
         return -1;
 
-    if (STRCMP(vol->vol->v_cnidscheme, != , "dbd"))
-        ERROR("\"%s\" isn't a \"dbd\" CNID volume!", vol->vol->v_path);
+    if (STRCMP(vol->vol->v_cnidscheme, == , "last"))
+        ERROR("\"%s\" is a \"last\" CNID volume! This utility is not compatible!", vol->vol->v_path);
 
     /* Sanity checks to ensure we can touch this volume */
     if (vol->vol->v_adouble != AD_VERSION2
@@ -126,7 +125,7 @@ int openvol(AFPObj *obj, const char *path, afpvol_t *vol)
         flags |= CNID_FLAG_NODEV;
 
     if ((vol->vol->v_cdb = cnid_open(vol->vol,
-                                     "dbd",
+                                     vol->vol->v_cnidscheme,
                                      flags)) == NULL)
         ERROR("Can't initialize CNID database connection for %s", vol->vol->v_path);
 
